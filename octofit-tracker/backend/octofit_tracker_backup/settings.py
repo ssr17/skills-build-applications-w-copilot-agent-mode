@@ -76,12 +76,7 @@ WSGI_APPLICATION = "octofit_tracker.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "djongo",
-        "NAME": "octofit_db",
-    }
-}
+DATABASES = {}
 
 
 # Password validation
@@ -124,3 +119,11 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# MongoEngine connection settings
+from mongoengine import connect
+connect(
+    db="octofit_db",
+    host="localhost",
+    port=27017
+)

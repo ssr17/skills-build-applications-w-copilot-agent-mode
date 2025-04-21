@@ -1,26 +1,25 @@
-from djongo import models
+from mongoengine import Document, StringField, EmailField, IntField, ListField, ReferenceField, DateField
 
-class User(models.Model):
-    id = models.CharField(max_length=255, primary_key=True)  # Use CharField for compatibility
-    email = models.EmailField(unique=True)
-    name = models.CharField(max_length=255)
-    password = models.CharField(max_length=255)
+class User(Document):
+    email = EmailField(required=True, unique=True)
+    name = StringField(max_length=255, required=True)
+    password = StringField(max_length=255, required=True)
 
-class Team(models.Model):
-    name = models.CharField(max_length=255)
-    members = models.ArrayField(model_container=User)
+class Team(Document):
+    name = StringField(max_length=255, required=True)
+    members = ListField(ReferenceField(User))
 
-class Activity(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    activity_type = models.CharField(max_length=255)
-    duration = models.IntegerField()
-    date = models.DateField()
+class Activity(Document):
+    user = ReferenceField(User, required=True)
+    activity_type = StringField(max_length=255, required=True)
+    duration = IntField(required=True)
+    date = DateField(required=True)
 
-class Leaderboard(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    score = models.IntegerField()
+class Leaderboard(Document):
+    user = ReferenceField(User, required=True)
+    score = IntField(required=True)
 
-class Workout(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    duration = models.IntegerField()
+class Workout(Document):
+    name = StringField(max_length=255, required=True)
+    description = StringField()
+    duration = IntField(required=True)
